@@ -41,25 +41,29 @@
 	
 	<script>
 		(function() {
-		    // Prefix all assets in data.js to load from live site
+		    // Base URL where the assets are hosted
 		    const baseURL = "https://hooplandgame.com/gg/hoop-land/";
 		
-		    // Only run if data.js has loaded
-		    if (window.cr_files && window.cr_files.urlMap) {
-		        const map = window.cr_files.urlMap;
-		        for (const key in map) {
-		            if (map.hasOwnProperty(key)) {
-		                // Only update relative paths
-		                if (!map[key].startsWith("http")) {
-		                    map[key] = baseURL + map[key];
+		    function fixPaths() {
+		        // Only run if data.js has loaded
+		        if (window.cr_files && window.cr_files.urlMap) {
+		            const map = window.cr_files.urlMap;
+		            for (const key in map) {
+		                if (map.hasOwnProperty(key)) {
+		                    // Only change relative paths
+		                    if (!map[key].startsWith("http")) {
+		                        map[key] = baseURL + map[key];
+		                    }
 		                }
 		            }
+		            console.log("All asset paths now point to live site.");
+		        } else {
+		            // Try again shortly if data.js isn't ready yet
+		            setTimeout(fixPaths, 100);
 		        }
-		        console.log("All asset paths now point to live site.");
-		    } else {
-		        // If cr_files not ready yet, try again after 100ms
-		        setTimeout(arguments.callee, 100);
 		    }
+		
+		    fixPaths();
 		})();
 	</script>
 	<script src="https://img.y8.com/prevent-keys.js"></script>
