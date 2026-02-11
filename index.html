@@ -39,8 +39,30 @@
 		}
     </style>
 	
-
-<script src="https://img.y8.com/prevent-keys.js"></script>
+	<script>
+		(function() {
+		    // Prefix all assets in data.js to load from live site
+		    const baseURL = "https://hooplandgame.com/gg/hoop-land/";
+		
+		    // Only run if data.js has loaded
+		    if (window.cr_files && window.cr_files.urlMap) {
+		        const map = window.cr_files.urlMap;
+		        for (const key in map) {
+		            if (map.hasOwnProperty(key)) {
+		                // Only update relative paths
+		                if (!map[key].startsWith("http")) {
+		                    map[key] = baseURL + map[key];
+		                }
+		            }
+		        }
+		        console.log("All asset paths now point to live site.");
+		    } else {
+		        // If cr_files not ready yet, try again after 100ms
+		        setTimeout(arguments.callee, 100);
+		    }
+		})();
+	</script>
+	<script src="https://img.y8.com/prevent-keys.js"></script>
             <script>
             // Console capture script
             (function() {
